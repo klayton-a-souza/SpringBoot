@@ -54,7 +54,7 @@ public class TopicosController {
 	
 	@GetMapping("/{id}")
 	public DetalhesDoTopicoDto detalhar(@PathVariable Long id) {
-		Topico topico = topicoRepository.getOne(id);
+		Topico topico = topicoRepository.getById(id);
 		return new DetalhesDoTopicoDto(topico);
 	}
 }
