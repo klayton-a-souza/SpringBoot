@@ -12,6 +12,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort.Direction;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -43,10 +44,9 @@ public class TopicosController {
 	private CursoRepository cursoRepository;
 
 	@GetMapping
-	public Page<TopicoDto> lista(@RequestParam(required = false) String nomeCurso, @RequestParam int pagina, @RequestParam int quantidade, @RequestParam String ordenacao) {
-		
-		Pageable paginacao = PageRequest.of(pagina, quantidade, Direction.ASC, ordenacao);
-		
+	public Page<TopicoDto> lista(@RequestParam(required = false) String nomeCurso,
+			@PageableDefault(sort = "id", direction = Direction.DESC, page = 0, size = 10) Pageable paginacao) {
+
 		if (nomeCurso == null) {
 			Page<Topico> topicos = topicoRepository.findAll(paginacao);
 			return TopicoDto.converter(topicos);
@@ -82,7 +82,7 @@ public class TopicosController {
 	@Transactional
 	public ResponseEntity<TopicoDto> atualizar(@PathVariable Long id, @RequestBody @Valid AtualizacaoTopicoForm form) {
 		Optional<Topico> optional = topicoRepository.findById(id);
-		if(optional.isPresent()) {
+		if (optional.isPresent()) {
 			Topico topico = form.atualizar(id, topicoRepository);
 			return ResponseEntity.ok(new TopicoDto(topico));
 		}
@@ -93,7 +93,7 @@ public class TopicosController {
 	@Transactional
 	public ResponseEntity remover(@PathVariable Long id) {
 		Optional<Topico> optional = topicoRepository.findById(id);
-		if(optional.isPresent()) {
+		if (optional.isPresent()) {
 			topicoRepository.deleteById(id);
 			return ResponseEntity.ok().build();
 		}
