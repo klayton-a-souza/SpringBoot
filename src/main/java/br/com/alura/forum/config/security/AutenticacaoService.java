@@ -1,4 +1,4 @@
-package br.com.alura.forum.cong.security;
+package br.com.alura.forum.config.security;
 
 import java.util.Optional;
 
@@ -12,19 +12,19 @@ import br.com.alura.forum.modelo.Usuario;
 import br.com.alura.forum.repository.UsuarioRepository;
 
 @Service
-public class AutenticacaoService implements UserDetailsService{
-
+public class AutenticacaoService implements UserDetailsService {
+	
 	@Autowired
 	private UsuarioRepository repository;
-	
+
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 		Optional<Usuario> usuario = repository.findByEmail(username);
-		if(usuario.isPresent()) {
+		if (usuario.isPresent()) {
 			return usuario.get();
 		}
-		throw new UsernameNotFoundException("Dados inválidos!");
 		
+		throw new UsernameNotFoundException("Dados inválidos!");
 	}
 
 }

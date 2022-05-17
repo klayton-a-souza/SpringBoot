@@ -13,9 +13,7 @@ public class TopicoDto {
 	private String mensagem;
 	private LocalDateTime dataCriacao;
 	
-	
-
-	public TopicoDto(Topico topico) {		
+	public TopicoDto(Topico topico) {
 		this.id = topico.getId();
 		this.titulo = topico.getTitulo();
 		this.mensagem = topico.getMensagem();
@@ -38,7 +36,7 @@ public class TopicoDto {
 		return dataCriacao;
 	}
 
-	public static Page<TopicoDto> converter(Page<Topico> topicos) {		
+	public static Page<TopicoDto> converter(Page<Topico> topicos) {
 		return topicos.map(TopicoDto::new);
 	}
 

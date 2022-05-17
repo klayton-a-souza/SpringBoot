@@ -1,4 +1,4 @@
-package br.com.alura.forum.cong.validacao;
+package br.com.alura.forum.config.validacao;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,24 +15,23 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 @RestControllerAdvice
 public class ErroDeValidacaoHandler {
-
+	
 	@Autowired
 	private MessageSource messageSource;
-
+	
 	@ResponseStatus(code = HttpStatus.BAD_REQUEST)
 	@ExceptionHandler(MethodArgumentNotValidException.class)
 	public List<ErroDeFormularioDto> handle(MethodArgumentNotValidException exception) {
 		List<ErroDeFormularioDto> dto = new ArrayList<>();
-
-		List<FieldError> fieldErros = exception.getBindingResult().getFieldErrors();
-		fieldErros.forEach(e -> {
+		
+		List<FieldError> fieldErrors = exception.getBindingResult().getFieldErrors();
+		fieldErrors.forEach(e -> {
 			String mensagem = messageSource.getMessage(e, LocaleContextHolder.getLocale());
 			ErroDeFormularioDto erro = new ErroDeFormularioDto(e.getField(), mensagem);
 			dto.add(erro);
 		});
-
+		
 		return dto;
-
 	}
 
 }
